@@ -1,10 +1,10 @@
 #include <mjerenje.h>
 
-uint32_t uhIC3ReadValue1 = 0;
-uint32_t uhIC3ReadValue2 = 0;
-uint16_t uhCaptureNumber = 0;
-uint32_t uwCapture = 0;
-double uwTIM1Freq = 0;
+uint32_t ReadValue1 = 0;
+uint32_t ReadValue2 = 0;
+uint16_t CaptureNumber = 0;
+uint32_t Capture = 0;
+double freq_interrupt = 0;
 RCC_ClocksTypeDef RCC_Clocks_mjerenje;
 uint32_t APB1_CLK;
 
@@ -50,33 +50,33 @@ void EXTI0_IRQHandler(void)
   
 	if(EXTI_GetITStatus(EXTI_Line0) != RESET)
   {
-    if(uhCaptureNumber == 0)
+    if(CaptureNumber == 0)
     {
       // Get the Counter value 
-      uhIC3ReadValue1 = TIM_GetCounter(TIM2);
-      uhCaptureNumber = 1;
+      ReadValue1 = TIM_GetCounter(TIM2);
+      CaptureNumber = 1;
     }
-    else if(uhCaptureNumber == 1)
+    else if(CaptureNumber == 1)
     {
       // Get the Counter value 
-      uhIC3ReadValue2 = TIM_GetCounter(TIM2); 
+      ReadValue2 = TIM_GetCounter(TIM2); 
       
       // Counter computation 
-      if (uhIC3ReadValue2 > uhIC3ReadValue1)
+      if (ReadValue2 > ReadValue1)
       {
-        uwCapture = (uhIC3ReadValue2 - uhIC3ReadValue1); 
+        Capture = (ReadValue2 - ReadValue1); 
       }
-      else if (uhIC3ReadValue2 < uhIC3ReadValue1)
+      else if (ReadValue2 < ReadValue1)
       {
-        uwCapture = ((0xFFFFFFFF - uhIC3ReadValue1) + uhIC3ReadValue2); 
+        Capture = ((0xFFFFFFFF - ReadValue1) + ReadValue2); 
       }
       else
       {
-        uwCapture = 0;
+        Capture = 0;
       }
       // Frequency computation
-      if (uwCapture != 0) uwTIM1Freq = (double)(APB1_CLK*2/100) / uwCapture;
-			uhCaptureNumber = 0;
+      if (Capture != 0) freq_interrupt = (double)(APB1_CLK*2/100) / Capture;
+			CaptureNumber = 0;
     }
 		
     // Clear the EXTI line 0 pending bit

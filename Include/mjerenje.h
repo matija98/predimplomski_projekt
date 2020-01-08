@@ -8,6 +8,6 @@
 void mjerenje_init(void);
 void EXTI0_IRQHandler(void);
 void timer2_init(void);
-extern double uwTIM1Freq;
+extern double freq_interrupt;
 
 #endif

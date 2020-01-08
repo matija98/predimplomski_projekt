@@ -53,7 +53,7 @@ int main(void)
   while (1)
 	{
 		// Dohvati frekvenciju
-		freq = uwTIM1Freq;
+		freq = freq_interrupt;
 		
 		// Izracunaj puls
 		puls = calc_pulse(freq);
