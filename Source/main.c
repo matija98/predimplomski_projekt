@@ -18,13 +18,13 @@ int calc_pulse(double freq);
 void print_on_screen(int pulse_value);
 
 
-/* Main program */
+// Main program
 int main(void)
 {
 	double freq = 0;
 	int puls = 0;
 
-	// SysTick end of count event each 10ms
+	// SysTick brojac od 10ms
   RCC_GetClocksFreq(&RCC_Clocks);
   SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
   
@@ -34,23 +34,18 @@ int main(void)
   LTDC_Cmd(ENABLE);
   LCD_SetLayer(LCD_FOREGROUND_LAYER);
   LCD_Clear(LCD_COLOR_WHITE);
-  
-	// Inicijalizacija LED4 i PB03
+  // Inicijalizacija LED4 i PB03
 	gpio_init();
-	
-	// Inicijalizacija timera koji generira 
-	// pravokutni signal prekidom
+	/* Inicijalizacija timera koji generira 
+	   pravokutni signal prekidom */
 	timer5_init();
-	
-	// Inicijalizacija timera pomocu kojega 
-	// ocitavamo vrijeme za racunanje frekvencije
+	/* Inicijalizacija timera pomocu kojega 
+		 ocitavamo vrijeme za racunanje frekvencije */
 	timer2_init();
-	
 	// Inicijalizacija vanjskog prekida
 	mjerenje_init();
 	
-	
-  while (1)
+	while (1)
 	{
 		// Dohvati frekvenciju
 		freq = freq_interrupt;
@@ -75,8 +70,8 @@ void print_on_screen(int pulse_value)
 {
 	char zap[12]={0};
 	
-	sprintf(zap, "%d", pulse_value);
-	strcat(zap, " bpm");
+	sprintf(zap, "%d", pulse_value); // Stavi integer u string
+	strcat(zap, " bpm"); // na frekvenciju nadodaj "bpm"
 	
 	if ((pulse_value >= 40) && (pulse_value <= 120))
 	{
@@ -100,8 +95,8 @@ void print_on_screen(int pulse_value)
 
 
 /**
-  * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in 10 ms.
+  * @brief  Daje kasnjenje.
+  * @param  nTime: specificira vrijeme kasnjenja u 10 ms.
   */
 void Delay(__IO uint32_t nTime)
 {
@@ -111,7 +106,7 @@ void Delay(__IO uint32_t nTime)
 }
 
 /**
-  * @brief  Decrements the TimingDelay variable.
+  * @brief  Dekrementira varijablu TimingDelay.
   */
 void TimingDelay_Decrement(void)
 {
